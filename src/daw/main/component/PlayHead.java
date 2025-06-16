@@ -27,6 +27,7 @@ public class PlayHead extends JPanel {
 		setBounds(position, 0, 2, 1000); // 재생바 위치
 		timer = new Timer(10, e->{
 			trackBody.playCurrentNote(position);
+			trackBody.stopCurrentNote(position);
 			updatePlayhead();
 		});
 	}

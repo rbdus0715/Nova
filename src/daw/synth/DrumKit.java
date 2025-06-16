@@ -16,14 +16,14 @@ import com.jsyn.unitgen.VariableRateStereoReader;
 import com.jsyn.util.SampleLoader;
 import com.jsyn.util.VoiceAllocator;
 
-public class DrumKit extends KeyboardPlayer implements Inst {
+public class DrumKit extends KeyboardPlayer {
 	private Synthesizer synth;
 	private VoiceAllocator allocator;
 	private LineOut lineOut;
 	private int VOICE_NUM = 5;
 	private File[] drumKitInst;
-	private Map<Character, FloatSample> keySamples;
-	private Map<Character, VariableRateDataReader> keyPlayers;
+	private Map<Integer, FloatSample> keySamples;
+	private Map<Integer, VariableRateDataReader> keyPlayers;
 
 	public DrumKit() {
 		keySamples = new HashMap<>();
@@ -36,15 +36,14 @@ public class DrumKit extends KeyboardPlayer implements Inst {
 		File sampleFolder = new File("src/samples/drumkit");
 		drumKitInst = sampleFolder.listFiles();
 		
-		String key = "asdfg";
 		for(int i=0; i<drumKitInst.length; i++) 
-			loadSampleForKey(key.charAt(i), i);
+			loadSampleForKey(60 + i, i);
 		
 		synth.start();
 		lineOut.start();
 	}
 	
-	void loadSampleForKey(char key, int i) {
+	void loadSampleForKey(int key, int i) {
 		try {
 			FloatSample sample = SampleLoader.loadFloatSample(drumKitInst[i]);
 			keySamples.put(key, sample);
@@ -69,14 +68,18 @@ public class DrumKit extends KeyboardPlayer implements Inst {
 		}
 	}
 	
-	public void noteOn(char key) {
-		VariableRateDataReader player = keyPlayers.get(key);
-		FloatSample sample = keySamples.get(key);
+	public void noteOn(int key) {
+		if(!isInOffset(key)) return;
+		int note = getNote(key);
+		
+		VariableRateDataReader player = keyPlayers.get(note);
+		FloatSample sample = keySamples.get(note);
+		
 		if(player != null && sample != null ) {
 			try {
 				player.dataQueue.clear();
 				player.dataQueue.queue(sample);
-				System.out.println("key: "+ key);
+				System.out.println("key: "+ note);
 			} catch(Exception e) {
 				System.out.print(e);
 			}
@@ -84,8 +87,7 @@ public class DrumKit extends KeyboardPlayer implements Inst {
 	}
 
 	@Override
-	public void noteOff(char key) {
-		// TODO Auto-generated method stub
+	public void noteOff(int key) {
 		
 	}
 

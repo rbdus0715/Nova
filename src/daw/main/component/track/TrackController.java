@@ -5,6 +5,9 @@ import java.awt.Color;
 
 import daw.main.TrackBar;
 import daw.main.TrackBar.TRACK_TYPE;
+import daw.synth.BasicSynthesizer;
+import daw.synth.Inst;
+import daw.synth.SynthDialog;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -18,12 +21,15 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.jsyn.Synthesizer;
 
 import daw.utils.Utils;
 
@@ -36,9 +42,11 @@ public class TrackController extends JPanel{
 	private JButton waveButton;
 	private JButton recordButton;
 	private String [] instruments = {"Drum Kit", "Synthesizer"};
-
+	private JDialog instDialog;
+	private TrackBar trackBar;
 	
 	public TrackController(TRACK_TYPE trackType, TrackBar trackBar, int tc_idx) {
+		this.trackBar = trackBar;
 		setLayout(new BorderLayout());
 		
 		tcHeader = new JPanel();
@@ -75,7 +83,28 @@ public class TrackController extends JPanel{
 		});
 		if(trackType == TRACK_TYPE.INST) {
 			tcHeaderEastPanel.add(waveButton);
+
+			
 			JComboBox<String> inst = new JComboBox<String>(instruments);
+			inst.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JComboBox<String> cb = (JComboBox<String>)e.getSource();
+					int index = cb.getSelectedIndex();
+					trackBar.changeInst(tc_idx, index);
+					System.out.println("Instrument is changed to " + index);
+					
+					if(index == 0) instDialog = null;
+					else {
+						BasicSynthesizer synth = (BasicSynthesizer)getInst(tc_idx);
+						instDialog = new SynthDialog(synth, TrackController.this);
+						waveButton.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								instDialog.setVisible(true);
+							}
+						});
+					}
+				}
+			});
 			inst.setPreferredSize(new Dimension(40, 20));
 			tcHeaderEastPanel.add(inst);
 		}
@@ -120,6 +149,10 @@ public class TrackController extends JPanel{
 			g.setColor(Color.RED);
 			g.fillOval(getWidth() / 2 - 5, getHeight() / 2 - 5, 10, 10);
 		}
+	}
+	
+	public Inst getInst(int tc_idx) {
+		return trackBar.getInst(tc_idx);
 	}
 	
 }

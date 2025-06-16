@@ -1,6 +1,7 @@
 package daw.synth;
 
 public interface Inst {
-	void noteOn(char key);
-	void noteOff(char key);
+	void noteOn(int key);
+	void noteOff(int key);
+	boolean isHaveDialog();
 }

@@ -14,6 +14,7 @@ import javax.swing.plaf.basic.BasicOptionPaneUI;
 
 import daw.main.component.track.TrackBody;
 import daw.main.component.track.TrackController;
+import daw.synth.Inst;
 import daw.utils.Utils;
 
 public class TrackBar extends JPanel {
@@ -72,6 +73,13 @@ public class TrackBar extends JPanel {
 	}
 	public void focus(int tc_idx) {
 		trackBody.focus(tc_idx);
+	}
+	
+	public void changeInst(int tc_idx, int index) {
+		trackBody.changeInst(tc_idx, index);
+	}
+	public Inst getInst(int tc_idx) {
+		return trackBody.getInst(tc_idx);
 	}
 	
 }

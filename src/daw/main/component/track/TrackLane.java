@@ -19,21 +19,23 @@ import javax.swing.JPanel;
 import daw.main.Daw;
 import daw.main.TrackBar.TRACK_TYPE;
 import daw.main.component.PlayHead;
+import daw.synth.BasicSynthesizer;
 import daw.synth.DrumKit;
 import daw.synth.Inst;
+import daw.synth.KeyboardPlayer;
 import daw.utils.Utils;
 
 class Note {
-	private char key;
+	private int key;
 	private int startTime;
 	private int endTime;
 	
-	Note(char key, int startTime, int endTime) {
+	Note(int key, int startTime, int endTime) {
 		this.key = key;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
-	char getKey() {
+	int getKey() {
 		return key;
 	}
 	int getStartTime() {
@@ -45,12 +47,11 @@ class Note {
 }
 
 public class TrackLane extends JPanel {
-	
-	private Inst inst;
-	private Map<Character, Integer> keyStartTime;
+	private KeyboardPlayer inst;
+	private Map<Integer, Integer> keyStartTime;
 	private Vector<Note> playData;
 	private PlayHead playhead;
-	private Map<Character, Integer> CharToKeyMap;
+//	private Map<Character, Integer> CharToKeyMap;
 	private Daw daw;
 	
 	TrackLane(TRACK_TYPE trackType, PlayHead playhead, Daw daw) {
@@ -58,14 +59,9 @@ public class TrackLane extends JPanel {
 		
 		inst = new DrumKit();
 		
-		CharToKeyMap = new HashMap<>();
+//		CharToKeyMap = new HashMap<>();
 		keyStartTime = new HashMap<>();
 		playData = new Vector<Note>();
-		
-		String keys = "asdfghjkl;";
-		for(int i=0; i<keys.length(); i++) {
-			CharToKeyMap.put(keys.charAt(i), i);
-		}
 		
 		this.playhead = playhead;
 		
@@ -80,11 +76,6 @@ public class TrackLane extends JPanel {
 		this.setMaximumSize(this.getPreferredSize());
 		setAlignmentX(this.LEFT_ALIGNMENT);
 		
-//		Random random = new Random();
-//	    int r = random.nextInt(256);
-//	    int g = random.nextInt(256);
-//	    int b = random.nextInt(256);
-//		setBackground(new Color(r, g, b));
 		Color color;
 		if(trackType == TRACK_TYPE.INST) color = new Color(67, 170, 139);
 		else color = Utils.ColorMap.COLOR_BACKGROUND;
@@ -93,39 +84,40 @@ public class TrackLane extends JPanel {
 	}
 	
 	class playKeyListener extends KeyAdapter {
-		private Set<Character> pressedKeys = new HashSet<>();
+		private Set<Integer> pressedKeys = new HashSet<>();
 		
 		public void keyPressed(KeyEvent e) {
-			char keyChar = e.getKeyChar();
-			inst.noteOn(keyChar);
+			int keyCode = e.getKeyCode();
+			if(pressedKeys.contains(keyCode))
+				return;		
+			if(keyCode == KeyEvent.VK_Z) inst.prevOctave();
+			else if(keyCode == KeyEvent.VK_X) inst.nextOctave();
+			
+			inst.noteOn(keyCode);
 
-			if(pressedKeys.contains(keyChar))
-				return;
-			pressedKeys.add(keyChar);
+			pressedKeys.add(keyCode);
 			int start_time = playhead.getPosition();
-//			System.out.print(keyChar);
-		    System.out.println("Key pressed '" + keyChar + "' at position: " + start_time);
-			keyStartTime.put(keyChar, start_time);
+		    
+			System.out.println("Key pressed '" + keyCode + "' at position: " + start_time);
+			keyStartTime.put(keyCode, start_time);
 		}
 		public void keyReleased(KeyEvent e) {
-			char keyChar = e.getKeyChar();
-			pressedKeys.remove(keyChar);
-
+			int keyCode = e.getKeyCode();
+			
 			int end_time = playhead.getPosition();
-			int start_time = keyStartTime.get(keyChar);
-			keyStartTime.remove(keyChar);
+			int start_time = keyStartTime.get(keyCode);
+			pressedKeys.remove(keyCode);
+			keyStartTime.remove(keyCode);
 			Note note;
-			playData.add(note = new Note(keyChar, start_time, end_time));
-		    System.out.println("Key released '" + keyChar + "' at position: " + end_time);
-//		    addNote(note);
-			revalidate();
+//			playData.add(note = new Note(inst.getNote(keyCode), start_time, end_time));
+			playData.add(note = new Note(keyCode, start_time, end_time));
+			inst.noteOff(keyCode);
+			System.out.println("Key released '" + keyCode + "' at position: " + end_time);
+		    revalidate();
 			repaint();
+
 		}
 	}
-	
-//	void addNote(Note note) {
-//		add(note);
-//	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
@@ -133,17 +125,19 @@ public class TrackLane extends JPanel {
 		try {
 			g.setColor(Color.BLUE);
 			for(int i=0; i<playData.size(); i++) {
-				Note note = playData.get(i);
-				int key = CharToKeyMap.get(note.getKey());
-				int NOTE_HEIGHT = getHeight() / 10;
+				Note code = playData.get(i);
+				int note = code.getKey();
+				int key = inst.getNote(note);
+				if(key == -1) continue;
+				int NOTE_HEIGHT = getHeight() / 60;
 				g.fillRect(
-						note.getStartTime(), 
+						code.getStartTime(), 
 						NOTE_HEIGHT * key, 
-						note.getEndTime() - note.getStartTime(), 
+						code.getEndTime() - code.getStartTime(), 
 						NOTE_HEIGHT);
 			} 
 		} catch(Exception e){
-			System.out.print(e);
+			System.out.print("##");
 		};
 	}
 	
@@ -151,6 +145,13 @@ public class TrackLane extends JPanel {
 		for(int i=0; i<playData.size(); i++) {
 			if(position == playData.get(i).getStartTime()) {
 				inst.noteOn(playData.get(i).getKey());
+			}
+		}
+	}
+	public void stopCurrentNote(int position) {
+		for(int i=0; i<playData.size(); i++) {
+			if(position == playData.get(i).getEndTime()) {
+				inst.noteOff(playData.get(i).getKey());
 			}
 		}
 	}
@@ -163,4 +164,17 @@ public class TrackLane extends JPanel {
 		}
 	}
 
+	public void changeInst(int idx) {
+		switch(idx) {
+		case 0:
+			inst = new DrumKit();
+			break;
+		case 1:
+			inst = new BasicSynthesizer();
+			break;
+		}
+	}
+	public Inst getInst() {
+		return inst;
+	}
 }

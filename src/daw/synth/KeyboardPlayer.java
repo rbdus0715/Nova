@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KeyboardPlayer {
+public class KeyboardPlayer implements Inst  {
 	private Map<Integer, Integer> keyOffset;
 	private int octave;
 
@@ -43,6 +43,11 @@ public class KeyboardPlayer {
 		return freq;
 	}
 	
+	public int getNote(int key) {
+		if(keyOffset.get(key) == null) return -1;
+		return octave + keyOffset.get(key);
+	}
+	
 	public void nextOctave() {
 		octave += 12;
 	}
@@ -52,5 +57,18 @@ public class KeyboardPlayer {
 	
 	public boolean isInOffset(int key) {
 		return keyOffset.containsKey(key);
+	}
+
+	@Override
+	public void noteOn(int key) {
+		System.out.println("noteOn");
+	}
+
+	@Override
+	public void noteOff(int key) {
+		System.out.println("noteOff");
+	}
+	public boolean isHaveDialog() {
+		return false;
 	}
 }

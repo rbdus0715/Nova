@@ -21,6 +21,7 @@ import daw.main.TrackBar.TRACK_TYPE;
 import daw.main.component.PlayHead;
 import daw.main.component.TrackRuler;
 import daw.main.component.metronome.Metronome;
+import daw.synth.Inst;
 import daw.utils.Utils;
 
 public class TrackBody extends JPanel {
@@ -39,6 +40,11 @@ public class TrackBody extends JPanel {
 	public void playCurrentNote(int position) {
 		for(int i=0; i<trackLanes.size(); i++) {
 			trackLanes.get(i).playCurrentNote(position);
+		}
+	}
+	public void stopCurrentNote(int position) {
+		for(int i=0; i<trackLanes.size(); i++) {
+			trackLanes.get(i).stopCurrentNote(position);
 		}
 	}
 	
@@ -83,5 +89,10 @@ public class TrackBody extends JPanel {
 		trackLanes.get(idx).setFocusable(true);
 		trackLanes.get(idx).requestFocus(); 
 	}
-
+	public void changeInst(int idx, int index) {
+		trackLanes.get(idx).changeInst(index);
+	}
+	public Inst getInst(int idx) {
+		return trackLanes.get(idx).getInst();
+	}
 }

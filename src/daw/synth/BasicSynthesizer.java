@@ -32,7 +32,7 @@ import com.jsyn.unitgen.UnitOscillator;
 import daw.synth.BasicSynthesizer.OSC_TYPE;
 import jdk.jfr.Frequency;
 
-public class BasicSynthesizer extends KeyboardPlayer implements Inst {
+public class BasicSynthesizer extends KeyboardPlayer {
 	private Synthesizer synth;
 	private LineOut lineOut;
 	private int octave=60;
@@ -46,7 +46,7 @@ public class BasicSynthesizer extends KeyboardPlayer implements Inst {
 	private PlateReverb reverb;
 	private Pan dryWet;
 	
-	BasicSynthesizer() {
+	public BasicSynthesizer() {
 		
 		synth = JSyn.createSynthesizer();
 		synth.add(lineOut = new LineOut());
@@ -187,6 +187,7 @@ public class BasicSynthesizer extends KeyboardPlayer implements Inst {
 	
 	public void noteOn(int key) {
 		if(!isInOffset(key)) return;
+		System.out.println("Synthesizer key : noteOn");
 		for(var voice : voices) {
 			if(voice.isActive == false) {
 				voice.start(getFreq(key), key);
@@ -196,6 +197,7 @@ public class BasicSynthesizer extends KeyboardPlayer implements Inst {
 	}
 	public void noteOff(int key) {
 		if(!isInOffset(key)) return;
+		System.out.println("Synthesizer key : noteOff");
 		for(var voice : voices) {
 			if(voice.isActive == true && voice.keyPlay == key) {
 				voice.stop();
@@ -204,16 +206,8 @@ public class BasicSynthesizer extends KeyboardPlayer implements Inst {
 		}
 	}
 
-	@Override
-	public void noteOn(char key) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void noteOff(char key) {
-		// TODO Auto-generated method stub
-		
+	public boolean isHaveDialog() {
+		return true;
 	}
 }
 
