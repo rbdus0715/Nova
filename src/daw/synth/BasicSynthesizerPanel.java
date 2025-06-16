@@ -94,13 +94,13 @@ public class BasicSynthesizerPanel extends JPanel {
 				basicSynthesizer.nextOctave();
 			
 			basicSynthesizer.noteOn(keyCode);
-			System.out.println("ASDf");
+			System.out.println("KeyPressed : noteOn");
 		}
 		public void keyReleased(KeyEvent e) {
 			int keyCode = e.getKeyCode();
 			keySet.remove(keyCode);
 			basicSynthesizer.noteOff(keyCode);
-			System.out.println("off");
+			System.out.println("KeyPressed : noteOff");
 		}
 	}
 

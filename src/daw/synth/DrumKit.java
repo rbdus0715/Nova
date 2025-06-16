@@ -16,7 +16,7 @@ import com.jsyn.unitgen.VariableRateStereoReader;
 import com.jsyn.util.SampleLoader;
 import com.jsyn.util.VoiceAllocator;
 
-public class DrumKit implements Inst {
+public class DrumKit extends KeyboardPlayer implements Inst {
 	private Synthesizer synth;
 	private VoiceAllocator allocator;
 	private LineOut lineOut;

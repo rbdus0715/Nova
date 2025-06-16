@@ -33,6 +33,7 @@ import daw.main.component.navigation.Bar;
 import daw.main.component.track.NewTrack;
 import daw.main.component.track.TrackBody;
 import daw.main.component.track.TrackController;
+import daw.main.component.track.TrackLane;
 import daw.utils.Utils;
 
 public class Daw extends JFrame {
@@ -135,9 +136,9 @@ public class Daw extends JFrame {
 		setVisible(true);
 	}
 	
-	public void viewEditor() {
+	public void viewEditor(TrackLane trackLane) {
 		System.out.println("DAW : editor is opened");
-		JPanel editArea = new EditArea(layeredPane);
+		JPanel editArea = new EditArea(layeredPane, trackLane);
 		layeredPane.add(editArea, Integer.valueOf(4));
 	}
 	public void closeEditor() {

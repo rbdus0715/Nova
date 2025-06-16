@@ -23,7 +23,7 @@ import daw.synth.DrumKit;
 import daw.synth.Inst;
 import daw.utils.Utils;
 
-class Note extends JPanel {
+class Note {
 	private char key;
 	private int startTime;
 	private int endTime;
@@ -32,7 +32,6 @@ class Note extends JPanel {
 		this.key = key;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		setBounds(startTime, 30, endTime - startTime, 5);
 	}
 	char getKey() {
 		return key;
@@ -118,35 +117,35 @@ public class TrackLane extends JPanel {
 			Note note;
 			playData.add(note = new Note(keyChar, start_time, end_time));
 		    System.out.println("Key released '" + keyChar + "' at position: " + end_time);
-		    addNote(note);
+//		    addNote(note);
 			revalidate();
 			repaint();
 		}
 	}
 	
-	void addNote(Note note) {
-		add(note);
-	}
-	
-//	@Override
-//	public void paintComponent(Graphics g) {
-//		super.paintComponent(g);
-//		try {
-//			g.setColor(Color.BLUE);
-//			for(int i=0; i<playData.size(); i++) {
-//				Note note = playData.get(i);
-//				int key = CharToKeyMap.get(note.getKey());
-//				int NOTE_HEIGHT = getHeight() / 10;
-//				g.fillRect(
-//						note.getStartTime(), 
-//						NOTE_HEIGHT * key, 
-//						note.getEndTime() - note.getStartTime(), 
-//						NOTE_HEIGHT);
-//			} 
-//		} catch(Exception e){
-//			System.out.print(e);
-//		};
+//	void addNote(Note note) {
+//		add(note);
 //	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		try {
+			g.setColor(Color.BLUE);
+			for(int i=0; i<playData.size(); i++) {
+				Note note = playData.get(i);
+				int key = CharToKeyMap.get(note.getKey());
+				int NOTE_HEIGHT = getHeight() / 10;
+				g.fillRect(
+						note.getStartTime(), 
+						NOTE_HEIGHT * key, 
+						note.getEndTime() - note.getStartTime(), 
+						NOTE_HEIGHT);
+			} 
+		} catch(Exception e){
+			System.out.print(e);
+		};
+	}
 	
 	public void playCurrentNote(int position) {
 		for(int i=0; i<playData.size(); i++) {
@@ -159,7 +158,7 @@ public class TrackLane extends JPanel {
 	class DoubleClickEvent extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
 			if(e.getClickCount() == 2) {
-				daw.viewEditor();
+				daw.viewEditor(TrackLane.this);
 			}
 		}
 	}

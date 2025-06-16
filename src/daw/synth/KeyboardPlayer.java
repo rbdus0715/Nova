@@ -35,10 +35,11 @@ public class KeyboardPlayer {
 		keyOffset.put(KeyEvent.VK_QUOTE, 17);
 	}
 	
+	// min : 24 ~ max : 84 -> range : 60
 	public double getFreq(int key) {
 		int keyToOffset = keyOffset.get(key);
 		double freq = 440.0 * Math.pow(2.0, (octave + keyToOffset - 69) / 12.0);
-		System.out.println(keyToOffset);
+		System.out.println(octave + keyToOffset);
 		return freq;
 	}
 	
