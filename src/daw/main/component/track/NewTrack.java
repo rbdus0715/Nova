@@ -23,12 +23,12 @@ public class NewTrack extends JPanel {
 		this.trackBar = trackBar;
 		this.trackBody = trackBody;
 		
-		JButton newInstTrackButton = new JButton("SYNTH");
-		JButton newAudioTrackButton = new JButton("AUDIO");
+		JButton newInstTrackButton = new JButton("new Inst track");
 		newInstTrackButton.addActionListener(new newTrackButtonEventListener(TRACK_TYPE.INST));
-		newAudioTrackButton.addActionListener(new newTrackButtonEventListener(TRACK_TYPE.AUDIO));
 		add(newInstTrackButton);
-		add(newAudioTrackButton);
+//		JButton newAudioTrackButton = new JButton("AUDIO");
+//		newAudioTrackButton.addActionListener(new newTrackButtonEventListener(TRACK_TYPE.AUDIO));
+//		add(newAudioTrackButton);
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 //		setBorder(Utils.WindowDesign.LINE_BORDER);
