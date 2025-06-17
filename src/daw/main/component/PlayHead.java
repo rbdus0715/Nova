@@ -20,6 +20,7 @@ public class PlayHead extends JPanel {
     private final int TRACK_WIDTH = 2000;
     private final int PLAYHEAD_SPEED = 1;
     private TrackBody trackBody;
+    private boolean record;
 	
 	public PlayHead() {
 		position = 0;
@@ -85,5 +86,10 @@ public class PlayHead extends JPanel {
 		repaint();
 	}
 	
-
+	public void setIsRecording(boolean record) {
+		this.record = record;
+	}
+	public boolean isRecording() {
+		return record;
+	}
 }

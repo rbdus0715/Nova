@@ -38,11 +38,13 @@ public class ControlBar extends JPanel {
 		centerPanel.setOpaque(false);
 		JButton startButton = new JButton("▶");
 		JButton initButton = new JButton("■");
-		startButton.addActionListener(new StartPlayEventListener());
+		JButton recordButton = new JButton("●");
+		startButton.addActionListener(new StartPlayEventListener(false));
 		initButton.addActionListener(new InitPlayEventListener());
+		recordButton.addActionListener(new StartPlayEventListener(true));
 		centerPanel.add(startButton);
 		centerPanel.add(initButton);
-		centerPanel.add(new JButton("●"));
+		centerPanel.add(recordButton);
 		
 		// rightPanel : master volumn
 		JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
@@ -63,10 +65,17 @@ public class ControlBar extends JPanel {
 	}
 	
 	class StartPlayEventListener implements ActionListener {
+		private boolean record;
+		StartPlayEventListener(boolean record) {
+			this.record = record;
+		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(playhead.getIsPlaying() == false)
+			if(playhead.getIsPlaying() == false) {
+				if(record == true) playhead.setIsRecording(true);
+				else playhead.setIsRecording(false);
 				playhead.startPlay();
+			}
 			else
 				playhead.stopPlay();
 		}

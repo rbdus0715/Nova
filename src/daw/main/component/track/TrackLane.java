@@ -25,26 +25,6 @@ import daw.synth.Inst;
 import daw.synth.KeyboardPlayer;
 import daw.utils.Utils;
 
-class Note {
-	private int key;
-	private int startTime;
-	private int endTime;
-	
-	Note(int key, int startTime, int endTime) {
-		this.key = key;
-		this.startTime = startTime;
-		this.endTime = endTime;
-	}
-	int getKey() {
-		return key;
-	}
-	int getStartTime() {
-		return startTime;
-	}
-	int getEndTime() {
-		return endTime;
-	}
-}
 
 public class TrackLane extends JPanel {
 	private KeyboardPlayer inst;
@@ -110,9 +90,10 @@ public class TrackLane extends JPanel {
 			keyStartTime.remove(keyCode);
 			Note note;
 //			playData.add(note = new Note(inst.getNote(keyCode), start_time, end_time));
-			playData.add(note = new Note(keyCode, start_time, end_time));
+			if(playhead.isRecording() == true)
+				playData.add(note = new Note(inst.getNote(keyCode), start_time, end_time));
 			inst.noteOff(keyCode);
-			System.out.println("Key released '" + keyCode + "' at position: " + end_time);
+			System.out.println("Key released '" + inst.getNote(keyCode) + "' at position: " + end_time);
 		    revalidate();
 			repaint();
 
@@ -177,4 +158,13 @@ public class TrackLane extends JPanel {
 	public Inst getInst() {
 		return inst;
 	}
+	
+	public int numNote() {
+		return playData.size();
+	}
+	
+	public Note getNote(int idx) {
+		return playData.get(idx);
+	}
+
 }
