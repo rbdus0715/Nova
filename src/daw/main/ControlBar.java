@@ -6,12 +6,18 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import daw.main.component.PlayHead;
 import daw.utils.Utils;
@@ -30,8 +36,9 @@ public class ControlBar extends JPanel {
 		// leftPanel : undo | do | metronome on/off | BPM | tempo type
 		JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 		leftPanel.setOpaque(false); 
-		leftPanel.add(new JButton("metronome on/off"));
-		leftPanel.add(new JButton("100")); // BPM
+//		leftPanel.add(new JButton("metronome on/off"));
+//		bpmButton = new JButton("100");
+//		leftPanel.add(bpmButton); // BPM
 		
 		// centerPanel : start/pause | go to start point | record 
 		JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -50,7 +57,19 @@ public class ControlBar extends JPanel {
 		JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
 		rightPanel.setBackground(Color.WHITE);
 		rightPanel.setOpaque(false);
-		rightPanel.add(new JButton("master volume"));
+//		rightPanel.add(new JButton("master volume"));
+//		JSlider volumeSlider = new JSlider(0, 100, 80); 
+//		volumeSlider.setPreferredSize(new Dimension(120, 20));
+//		volumeSlider.setOpaque(false);
+//		volumeSlider.addChangeListener(new ChangeListener() {
+//		    @Override
+//		    public void stateChanged(ChangeEvent e) {
+//		        int value = volumeSlider.getValue();
+//		        float volume = value / 100.0f;
+//		        
+//		    }
+//		});
+//		rightPanel.add(volumeSlider);
 
 		setLayout(new BorderLayout());
 		add(spacer, BorderLayout.NORTH);       

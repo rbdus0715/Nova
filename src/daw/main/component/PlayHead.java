@@ -33,6 +33,14 @@ public class PlayHead extends JPanel {
 		});
 	}
 	
+	public void setTimer(int speed) {
+		timer = new Timer(speed, e->{
+			trackBody.playCurrentNote(position);
+			trackBody.stopCurrentNote(position);
+			updatePlayhead();
+		});
+	}
+	
 	public void setTrackBody(TrackBody trackBody) {
 		this.trackBody = trackBody;
 	}
