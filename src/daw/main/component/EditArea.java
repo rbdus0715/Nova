@@ -190,4 +190,37 @@ public class EditArea extends JPanel {
 		}
 	}
 	
+	public void refresh() {
+	    body.removeAll();
+	    noteButtons.clear();
+	    int numNote = trackLane.numNote();
+	    for(int i=0; i<numNote; i++) {
+	        Note note = trackLane.getNote(i);
+	        JButton noteButton = new JButton();
+	        int start_time = note.getStartTime();
+	        int end_time = note.getEndTime();
+	        int keyCode = note.getKey();
+	        int height = getHeight() - headerHeight;
+	        int blockHeight = height / 60;
+	        keyCode -= 24;
+	        noteButton.setBounds(
+	            start_time,
+	            keyCode * blockHeight,
+	            (end_time - start_time), 
+	            blockHeight);
+	        noteButtons.add(noteButton);
+	        body.add(noteButton);
+	        noteButton.addActionListener(e -> {
+	            noteButton.requestFocus();
+	            clickedButton = noteButton;
+	        });
+	        noteButton.addKeyListener(new EraseButtonListener());
+	        MouseDragListener dragListener = new MouseDragListener();
+	        noteButton.addMouseListener(dragListener);
+	        noteButton.addMouseMotionListener(dragListener);
+	    }
+	    body.revalidate();
+	    body.repaint();
+	}
+	
 }

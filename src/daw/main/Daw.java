@@ -138,11 +138,15 @@ public class Daw extends JFrame {
 	
 	public void viewEditor(TrackLane trackLane) {
 		System.out.println("DAW : editor is opened");
-		JPanel editArea = new EditArea(layeredPane, trackLane);
+		editArea = new EditArea(layeredPane, trackLane);
 		layeredPane.add(editArea, Integer.valueOf(4));
 	}
 	public void closeEditor() {
 		layeredPane.closeEditor(editArea);
+	}
+	
+	public EditArea getEditArea() {
+		return editArea;
 	}
 }
 
