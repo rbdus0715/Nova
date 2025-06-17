@@ -151,7 +151,6 @@ public class EditArea extends JPanel {
 	            if (idx != -1) {
 	                noteButtons.remove(idx);
 	                body.remove(source);
-	                // TrackLane의 playData에서도 삭제
 	                trackLane.removeNote(idx);
 	                revalidate();
 	                repaint();
