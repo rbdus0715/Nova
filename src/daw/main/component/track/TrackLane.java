@@ -94,7 +94,8 @@ public class TrackLane extends JPanel {
 				playData.add(note = new Note(inst.getNote(keyCode), start_time, end_time));
 			inst.noteOff(inst.getNote(keyCode));
 			System.out.println("Key released '" + inst.getNote(keyCode) + "' at position: " + end_time);
-			daw.getEditArea().refresh();
+			if(daw.isEditor())
+				daw.getEditArea().refresh();
 		    revalidate();
 		    repaint();
 		}
@@ -168,4 +169,9 @@ public class TrackLane extends JPanel {
 		return playData.get(idx);
 	}
 
+	public void removeNote(int idx) {
+	    if (idx >= 0 && idx < playData.size()) {
+	        playData.remove(idx);
+	    }
+	}
 }

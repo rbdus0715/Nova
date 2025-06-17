@@ -143,10 +143,16 @@ public class Daw extends JFrame {
 	}
 	public void closeEditor() {
 		layeredPane.closeEditor(editArea);
+		editArea = null;
 	}
 	
 	public EditArea getEditArea() {
 		return editArea;
+	}
+	public boolean isEditor() {
+		if(editArea != null)
+			return true;
+		else return false;
 	}
 }
 

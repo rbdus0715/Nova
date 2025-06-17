@@ -142,17 +142,22 @@ public class EditArea extends JPanel {
 	}
 	
 	class EraseButtonListener extends KeyAdapter {
-		@Override
-		public void keyPressed(KeyEvent e) {
-			int keyCode = e.getKeyCode();
-			if(keyCode == KeyEvent.VK_BACK_SPACE) {
-				JButton source = (JButton)e.getSource();
-				noteButtons.remove(source);
-				body.remove(clickedButton);
-				revalidate();
-				repaint();
-			}
-		}
+	    @Override
+	    public void keyPressed(KeyEvent e) {
+	        int keyCode = e.getKeyCode();
+	        if(keyCode == KeyEvent.VK_BACK_SPACE) {
+	            JButton source = (JButton)e.getSource();
+	            int idx = noteButtons.indexOf(source);
+	            if (idx != -1) {
+	                noteButtons.remove(idx);
+	                body.remove(source);
+	                // TrackLane의 playData에서도 삭제
+	                trackLane.removeNote(idx);
+	                revalidate();
+	                repaint();
+	            }
+	        }
+	    }
 	}
 	class MouseDragListener extends MouseAdapter {
 		JButton button;
