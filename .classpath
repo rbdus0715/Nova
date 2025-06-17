@@ -7,6 +7,5 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="libs/jsyn-17.1.0.jar"/>
-	<classpathentry kind="lib" path="libs/flatlaf-3.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

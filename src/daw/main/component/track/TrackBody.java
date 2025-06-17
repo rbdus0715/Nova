@@ -95,4 +95,7 @@ public class TrackBody extends JPanel {
 	public Inst getInst(int idx) {
 		return trackLanes.get(idx).getInst();
 	}
+	public int numInst() {
+		return trackLanes.size();
+	}
 }
