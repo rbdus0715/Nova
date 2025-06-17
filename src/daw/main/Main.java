@@ -1,10 +1,7 @@
 package daw.main;
 
 import java.awt.Color;
-
 import javax.swing.UIManager;
-
-import com.formdev.flatlaf.FlatDarkLaf;
 
 public class Main {
 

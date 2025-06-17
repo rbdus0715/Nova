@@ -25,7 +25,7 @@ public class PlayHead extends JPanel {
 	public PlayHead() {
 		position = 0;
 		setBackground(Utils.ColorMap.COLOR_PLAY_HEAD);
-		setBounds(position, 0, 2, 1000); // 재생바 위치
+		setBounds(position, 0, 2, 1000); 
 		timer = new Timer(10, e->{
 			trackBody.playCurrentNote(position);
 			trackBody.stopCurrentNote(position);
