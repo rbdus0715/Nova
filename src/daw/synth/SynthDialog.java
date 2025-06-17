@@ -23,7 +23,6 @@ import com.jsyn.scope.AudioScope;
 
 import daw.main.component.track.TrackController;
 import daw.synth.BasicSynthesizer.OSC_TYPE;
-import daw.synth.BasicSynthesizerPanel.KeyPlayListener;
 
 public class SynthDialog extends JDialog {
 	
