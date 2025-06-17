@@ -180,6 +180,13 @@ public class EditArea extends JPanel {
 			int newY = button.getY();
 			int snappedY = Math.round((float)newY / 9) * 9;
 			button.setLocation(newX, snappedY);
+			
+			int idx = noteButtons.indexOf(button);
+			Note note = trackLane.getNote(idx);
+			int duration = note.getEndTime() - note.getStartTime();
+			note.setStartTime(newX);
+			note.setEndTime(newX + duration);
+			note.setKey((snappedY / 9) + 24);
 		}
 	}
 	

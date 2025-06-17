@@ -19,4 +19,13 @@ public class Note {
 	public int getEndTime() {
 		return endTime;
 	}
+	public void setStartTime(int s) {
+		startTime = s;
+	}
+	public void setEndTime(int e) {
+		endTime = e;
+	}
+	public void setKey(int k) {
+		key = k;
+	}
 }
