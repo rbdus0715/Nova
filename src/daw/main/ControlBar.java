@@ -105,7 +105,6 @@ public class ControlBar extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			playhead.initPlay();
 		}
-		
 	}
 }
 

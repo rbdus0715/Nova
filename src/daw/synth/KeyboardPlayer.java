@@ -37,7 +37,6 @@ public class KeyboardPlayer implements Inst  {
 	
 	// min : 24 ~ max : 84 -> range : 60
 	public double getFreq(int key) {
-//		int keyToOffset = keyOffset.get(key);
 		double freq = 440.0 * Math.pow(2.0, (key - 69) / 12.0);
 		System.out.println(key);
 		return freq;
