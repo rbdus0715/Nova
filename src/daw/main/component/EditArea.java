@@ -5,9 +5,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -30,12 +34,15 @@ public class EditArea extends JPanel {
 	private int headerHeight = 30;
 	private TrackLane trackLane;
 	private JPanel header;
+	private Vector<JButton> noteButtons;
+	private JButton clickedButton;
+	private JPanel body;
 	
 	public EditArea(LayeredPaneTrackMain layeredPane, TrackLane trackLane) {
 		this.layeredPane = layeredPane;
 		this.trackLane = trackLane;
 		int HEIGHT = layeredPane.getHeight();
-
+		noteButtons = new Vector<JButton>();
 		
 		setBackground(Utils.ColorMap.COLOR_CONTROLBAR);
 		setBounds(0, layeredPane.getHeight() - HEIGHT, layeredPane.getWidth(), HEIGHT);
@@ -69,7 +76,7 @@ public class EditArea extends JPanel {
 	}
 	
 	public void initBody() {
-		JPanel body = new JPanel();
+		body = new JPanel();
 		body.setLayout(null);
 		body.setPreferredSize(new Dimension(getWidth(), getHeight() - header.getHeight()));
 		body.setOpaque(false);
@@ -91,7 +98,16 @@ public class EditArea extends JPanel {
 					keyCode * blockHeight,
 					(end_time - start_time), 
 					blockHeight);
+			noteButtons.add(noteButton);
 			body.add(noteButton);
+			noteButton.addActionListener(e -> {
+				noteButton.requestFocus();
+				clickedButton = noteButton;
+			});
+			noteButton.addKeyListener(new EraseButtonListener());
+			MouseDragListener dragListener = new MouseDragListener();
+			noteButton.addMouseListener(dragListener);
+			noteButton.addMouseMotionListener(dragListener);
 //			System.out.println(
 //					start_time + " " +
 //					noteKey * blockHeight + " " +
@@ -122,6 +138,48 @@ public class EditArea extends JPanel {
 		g.setColor(Color.DARK_GRAY);
 		for(int i=0; i<16 * 2 * 4 * 8; i+=blockWidth) {
 			g.drawLine(i + blockWidth, 0, i + blockWidth, getHeight());
+		}
+	}
+	
+	class EraseButtonListener extends KeyAdapter {
+		@Override
+		public void keyPressed(KeyEvent e) {
+			int keyCode = e.getKeyCode();
+			if(keyCode == KeyEvent.VK_BACK_SPACE) {
+				JButton source = (JButton)e.getSource();
+				noteButtons.remove(source);
+				body.remove(clickedButton);
+				revalidate();
+				repaint();
+			}
+		}
+	}
+	class MouseDragListener extends MouseAdapter {
+		JButton button;
+		int clickedX, clickedY;
+		@Override
+		public void mousePressed(MouseEvent m) {
+			button = (JButton) m.getSource();
+			clickedX = m.getX();
+			clickedY = m.getY();
+			button.requestFocus();
+		}
+		@Override
+		public void mouseDragged(MouseEvent m) {
+			if(button == null) return;
+			int newX = button.getX() + m.getX() - clickedX;
+			int newY = button.getY() + m.getY() - clickedY;
+			button.setLocation(newX, newY);
+			revalidate();
+			button.getParent().repaint();
+		}
+		@Override
+		public void mouseReleased(MouseEvent m) {
+			if(button == null) return;
+			int newX = button.getX();
+			int newY = button.getY();
+			int snappedY = Math.round((float)newY / 9) * 9;
+			button.setLocation(newX, snappedY);
 		}
 	}
 	
