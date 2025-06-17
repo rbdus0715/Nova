@@ -186,7 +186,7 @@ public class BasicSynthesizer extends KeyboardPlayer {
 	
 	
 	public void noteOn(int key) {
-		if(!isInOffset(key)) return;
+//		if(!isInOffset(key)) return;
 		System.out.println("Synthesizer key : noteOn");
 		for(var voice : voices) {
 			if(voice.isActive == false) {
@@ -196,7 +196,7 @@ public class BasicSynthesizer extends KeyboardPlayer {
 		}
 	}
 	public void noteOff(int key) {
-		if(!isInOffset(key)) return;
+//		if(!isInOffset(key)) return;
 		System.out.println("Synthesizer key : noteOff");
 		for(var voice : voices) {
 			if(voice.isActive == true && voice.keyPlay == key) {

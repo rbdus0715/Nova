@@ -69,8 +69,9 @@ public class DrumKit extends KeyboardPlayer {
 	}
 	
 	public void noteOn(int key) {
-		if(!isInOffset(key)) return;
-		int note = getNote(key);
+//		if(!isInOffset(key)) return;
+//		int note = getNote(key);
+		int note = key;
 		
 		VariableRateDataReader player = keyPlayers.get(note);
 		FloatSample sample = keySamples.get(note);

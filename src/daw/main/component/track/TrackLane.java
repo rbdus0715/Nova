@@ -73,7 +73,7 @@ public class TrackLane extends JPanel {
 			if(keyCode == KeyEvent.VK_Z) inst.prevOctave();
 			else if(keyCode == KeyEvent.VK_X) inst.nextOctave();
 			
-			inst.noteOn(keyCode);
+			inst.noteOn(inst.getNote(keyCode));
 
 			pressedKeys.add(keyCode);
 			int start_time = playhead.getPosition();
@@ -124,18 +124,18 @@ public class TrackLane extends JPanel {
 	}
 	
 	public void playCurrentNote(int position) {
-		for(int i=0; i<playData.size(); i++) {
-			if(position == playData.get(i).getStartTime()) {
-				inst.noteOn(playData.get(i).getKey());
-			}
-		}
+	    for(int i=0; i<playData.size(); i++) {
+	        if(position == playData.get(i).getStartTime()) {
+	            inst.noteOn(playData.get(i).getKey());
+	        }
+	    }
 	}
 	public void stopCurrentNote(int position) {
-		for(int i=0; i<playData.size(); i++) {
-			if(position == playData.get(i).getEndTime()) {
-				inst.noteOff(playData.get(i).getKey());
-			}
-		}
+	    for(int i=0; i<playData.size(); i++) {
+	        if(position == playData.get(i).getEndTime()) {
+	            inst.noteOff(playData.get(i).getKey());
+	        }
+	    }
 	}
 	
 	class DoubleClickEvent extends MouseAdapter {
