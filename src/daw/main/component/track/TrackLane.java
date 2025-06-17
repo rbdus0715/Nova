@@ -92,7 +92,7 @@ public class TrackLane extends JPanel {
 //			playData.add(note = new Note(inst.getNote(keyCode), start_time, end_time));
 			if(playhead.isRecording() == true)
 				playData.add(note = new Note(inst.getNote(keyCode), start_time, end_time));
-			inst.noteOff(keyCode);
+			inst.noteOff(inst.getNote(keyCode));
 			System.out.println("Key released '" + inst.getNote(keyCode) + "' at position: " + end_time);
 		    revalidate();
 			repaint();

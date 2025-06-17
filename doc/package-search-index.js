@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"daw.main"},{"l":"daw.main.component"},{"l":"daw.main.component.metronome"},{"l":"daw.main.component.navigation"},{"l":"daw.main.component.track"},{"l":"daw.synth"},{"l":"daw.synth.test"},{"l":"daw.utils"}];updateSearchResults();

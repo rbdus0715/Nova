@@ -104,13 +104,13 @@ public class SynthDialog extends JDialog {
 			if(keyCode == KeyEvent.VK_X)
 				basicSynthesizer.nextOctave();
 			
-			basicSynthesizer.noteOn(keyCode);
+			basicSynthesizer.noteOn(basicSynthesizer.getNote(keyCode));
 			System.out.println("KeyPressed : noteOn");
 		}
 		public void keyReleased(KeyEvent e) {
 			int keyCode = e.getKeyCode();
 			keySet.remove(keyCode);
-			basicSynthesizer.noteOff(keyCode);
+			basicSynthesizer.noteOff(basicSynthesizer.getNote(keyCode));
 			System.out.println("KeyPressed : noteOff");
 		}
 	}

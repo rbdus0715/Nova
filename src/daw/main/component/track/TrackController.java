@@ -116,8 +116,8 @@ public class TrackController extends JPanel{
 		tcHeader.add(deleteButton, BorderLayout.EAST);
 		
 		JPanel tcBottom = new JPanel();
-		JSlider volumeFader = new JSlider();
-		tcBottom.add(volumeFader);
+//		JSlider volumeFader = new JSlider();
+//		tcBottom.add(volumeFader);
 		
 		setBorder(Utils.WindowDesign.LINE_BORDER);
 		setPreferredSize(new Dimension(200, 100));
