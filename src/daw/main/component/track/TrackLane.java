@@ -108,12 +108,13 @@ public class TrackLane extends JPanel {
 			for(int i=0; i<playData.size(); i++) {
 				Note code = playData.get(i);
 				int note = code.getKey();
-				int key = inst.getNote(note);
-				if(key == -1) continue;
+				note -= 24;
+//				int key = inst.getNote(note);
+//				if(key == -1) continue;
 				int NOTE_HEIGHT = getHeight() / 60;
 				g.fillRect(
 						code.getStartTime(), 
-						NOTE_HEIGHT * key, 
+						NOTE_HEIGHT * note, 
 						code.getEndTime() - code.getStartTime(), 
 						NOTE_HEIGHT);
 			} 
