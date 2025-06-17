@@ -2,7 +2,9 @@
 
 # 🎵 Nova
 
-## service
+## Service
 🎹 Nova DAW is Digital Audio Workstation inspired from visual studio code.<br>
 (2025-1 inha university "Java-based application programming class" project)
 
+## Manual
+<img width="572" alt="image" src="https://github.com/user-attachments/assets/5d245a74-a51b-40a9-9f33-7ec2a95023a5" />
