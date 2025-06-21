@@ -89,7 +89,7 @@ public class DrumKit extends KeyboardPlayer {
 
 	@Override
 	public void noteOff(int key) {
-		
+		System.out.println("drum kit has no noteOff feature (only samples)");
 	}
 
 }

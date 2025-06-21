@@ -29,6 +29,7 @@ import daw.utils.Utils;
 public class TrackLane extends JPanel {
 	private KeyboardPlayer inst;
 	private Map<Integer, Integer> keyStartTime;
+	private Map<Integer, Integer> activeNotes;
 	private Vector<Note> playData;
 	private PlayHead playhead;
 //	private Map<Character, Integer> CharToKeyMap;
@@ -41,6 +42,7 @@ public class TrackLane extends JPanel {
 		
 //		CharToKeyMap = new HashMap<>();
 		keyStartTime = new HashMap<>();
+		activeNotes = new HashMap<>();
 		playData = new Vector<Note>();
 		
 		this.playhead = playhead;
@@ -70,30 +72,50 @@ public class TrackLane extends JPanel {
 			int keyCode = e.getKeyCode();
 			if(pressedKeys.contains(keyCode))
 				return;		
-			if(keyCode == KeyEvent.VK_Z) inst.prevOctave();
-			else if(keyCode == KeyEvent.VK_X) inst.nextOctave();
-			
-			inst.noteOn(inst.getNote(keyCode));
 
 			pressedKeys.add(keyCode);
+
+			if(keyCode == KeyEvent.VK_Z) {
+				inst.prevOctave();
+				return;
+			}
+			else if(keyCode == KeyEvent.VK_X) {
+				inst.nextOctave();
+				return;
+			}
+			
+			int note = inst.getNote(keyCode);
+			if(note == -1) return;
+
+			inst.noteOn(note);
+
 			int start_time = playhead.getPosition();
 		    
 			System.out.println("Key pressed '" + keyCode + "' at position: " + start_time);
+			activeNotes.put(keyCode, note);
 			keyStartTime.put(keyCode, start_time);
 		}
 		public void keyReleased(KeyEvent e) {
 			int keyCode = e.getKeyCode();
+			if(!pressedKeys.contains(keyCode)) return;
 			
+			pressedKeys.remove(keyCode);
+
+			if(!activeNotes.containsKey(keyCode)) return;
+
 			int end_time = playhead.getPosition();
 			int start_time = keyStartTime.get(keyCode);
-			pressedKeys.remove(keyCode);
+			int noteValue = activeNotes.get(keyCode);
+
 			keyStartTime.remove(keyCode);
+			activeNotes.remove(keyCode);
+
 			Note note;
 //			playData.add(note = new Note(inst.getNote(keyCode), start_time, end_time));
 			if(playhead.isRecording() == true)
-				playData.add(note = new Note(inst.getNote(keyCode), start_time, end_time));
-			inst.noteOff(inst.getNote(keyCode));
-			System.out.println("Key released '" + inst.getNote(keyCode) + "' at position: " + end_time);
+				playData.add(note = new Note(noteValue, start_time, end_time));
+			inst.noteOff(noteValue);
+			System.out.println("Key released '" + noteValue + "' at position: " + end_time);
 			if(daw.isEditor())
 				daw.getEditArea().refresh();
 		    revalidate();
