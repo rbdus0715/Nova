@@ -96,14 +96,26 @@ public class SynthDialog extends JDialog {
 		
 	class KeyPlayListener extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
-			int keyCode = e.getKeyCode();			
+			int keyCode = e.getKeyCode();
 			if(keySet.contains(keyCode)) return;
 			keySet.add(keyCode);
-			if(keyCode == KeyEvent.VK_Z)
-				basicSynthesizer.prevOctave();
-			if(keyCode == KeyEvent.VK_X)
-				basicSynthesizer.nextOctave();
-			
+
+			if(keyCode == KeyEvent.VK_Z || keyCode == KeyEvent.VK_X) {
+				// 옥타브 바꾸기 전에 현재 눌린 모든 키 noteOff
+				for (int pressedKey : new HashSet<>(keySet)) {
+					if (pressedKey != KeyEvent.VK_Z && pressedKey != KeyEvent.VK_X) {
+						basicSynthesizer.noteOff(basicSynthesizer.getNote(pressedKey));
+					}
+				}
+				keySet.clear(); // 모든 키 해제
+
+				if(keyCode == KeyEvent.VK_Z)
+					basicSynthesizer.prevOctave();
+				if(keyCode == KeyEvent.VK_X)
+					basicSynthesizer.nextOctave();
+				return; // 옥타브 키는 noteOn 하지 않음
+			}
+
 			basicSynthesizer.noteOn(basicSynthesizer.getNote(keyCode));
 			System.out.println("KeyPressed : noteOn");
 		}
